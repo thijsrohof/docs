@@ -98,10 +98,20 @@ An OData v4 navigation property can only be used as an association if it has a p
 
 Mendix Data Hub is a separately licensed product.
 
-Without a license, an app can retrieve a total of 1000 OData objects per day for each runtime instance. After that limit is exceeded, an error will occur when users try to retrieve more data. The number of consumed objects per day is reset at midnight in the timezone of the Mendix Runtime scheduler (which can be defined in the app [Project Settings](project-settings#scheduled)).
+Without a Premium license, an app can retrieve a total of 1000 OData objects per day for each runtime instance. After that limit is exceeded, an error will occur when users try to retrieve more data. The number of consumed objects per day is reset at midnight in the timezone of the Mendix Runtime scheduler (which can be defined in the app [Project Settings](project-settings#scheduled)).
 
 With a Data Hub license, apps are not limited.
 
 {{% alert type="info" %}}Apps running in development environments (and also when running from the Studios) do not have this limitation. This means that you can run your app from the Studios without Data Hub license limitations.{{% /alert %}}
 
 Contact your [Mendix Admin](/developerportal/control-center/#company) or Data Hub Admin to find out what type of Data Hub license your organization has.
+
+### 4.1 How do I know if an app has reached its Free daily limit of a 1000 objects?
+The app instance logs for each call how many objects it has retrieved, and how many are left within the license limitation. Once the limit of a 1000 objects has been reached we'll log two different statements:
+
+1. On `info` level we log the following statement when the limit is reached:
+`"Exceeded the daily limit. Retrieved $delta objects, which would increase the counter to $newCount (of max $max per day)."`
+2. On `error` level we log log the following statement when the limit is reached:
+`"The limit of $max objects has been reached."`
+
+    ***Note:** It’s up to the application to communicate to its end-users that the daily limit has been reached, if this is not done, the end-user will get a message that an error occurred.*
